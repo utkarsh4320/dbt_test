@@ -1,8 +1,6 @@
--- models/staging/ipl_data/stg_ipl_data__deliveries.sql
-
 with source as (
 
-    select * from {{ source(\'ipl_raw_data\', \'ipl_match_data\') }}
+    select * from {{ source('ipl_raw_data', 'ipl_match_data') }}
 
 ),
 
@@ -14,12 +12,13 @@ renamed as (
         innings::integer as inning_number,
         over_number::integer as over_number,
         delivery_number::integer as ball_of_over,
+
         -- Composite key for uniqueness
-        match_id::varchar || \'-\' || innings::varchar || \'-\' || over_number::varchar || \'-\' || delivery_number::varchar as delivery_id,
+        match_id::text || '-' || innings::text || '-' || over_number::text || '-' || delivery_number::text as delivery_id,
 
         -- Teams & Players involved in delivery
         team::varchar as batting_team, 
-        -- Assuming \'team\' column indicates the batting team for the delivery
+        -- Assuming 'team' column indicates the batting team for the delivery
         batter::varchar as batter_name,
         bowler::varchar as bowler_name,
         non_striker::varchar as non_striker_name,
@@ -44,8 +43,15 @@ renamed as (
         case when wicket_kind is not null then true else false end as is_wicket,
 
         -- Contextual Flags
-        powerplay::boolean as is_powerplay, -- Assuming \'yes\'/'no\' or similar, adjust casting if needed
-        super_over::boolean as is_super_over, -- Assuming 0/1 or similar, adjust casting if needed
+        case 
+            when lower(powerplay) = 'yes' then true 
+            else false 
+        end as is_powerplay,
+
+        case 
+            when super_over = 1 then true 
+            else false 
+        end as is_super_over,
 
         -- Target (if applicable, usually for 2nd innings)
         target_remaining::integer as target_runs_remaining,
@@ -66,4 +72,3 @@ renamed as (
 )
 
 select * from renamed
-
