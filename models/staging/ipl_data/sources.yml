@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: ipl_raw_data # This is the source name used in ref functions
+    description: "Raw IPL match and delivery data loaded from CSV."
+    # IMPORTANT: Specify your database and schema here
+    # database: your_snowflake_database 
+    # schema: your_raw_schema
+    tables:
+      - name: ipl_match_data # This is the table name in your raw schema
+        description: "Contains ball-by-ball data and match metadata."
+        loaded_at_field: current_timestamp() # Example, adjust if you have a load timestamp column
+        columns:
+          # Add column descriptions and tests here later if needed
+          - name: match_id
+          - name: innings
+          - name: over_number
+          - name: delivery_number
+          # ... other columns from the CSV

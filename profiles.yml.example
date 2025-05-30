@@ -1,0 +1,28 @@
+# profiles.yml.example
+# Save this file as profiles.yml in your ~/.dbt/ directory
+# Or set the DBT_PROFILES_DIR environment variable
+
+ipl_analytics_profile: # This name must match the profile in dbt_project.yml
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: <your_snowflake_account_identifier> # e.g., xy12345.us-east-1
+
+      # User/Password Authentication
+      user: <your_snowflake_user>
+      password: <your_snowflake_password>
+
+      # Key Pair Authentication (Recommended)
+      # user: <your_snowflake_user>
+      # private_key_path: /path/to/your/private_key.p8
+      # private_key_passphrase: <your_passphrase_if_set>
+
+      role: <your_snowflake_role>
+      database: <your_snowflake_database> # Database where raw data and dbt models will live
+      warehouse: <your_snowflake_warehouse>
+      schema: <your_default_schema> # Default schema, often analytics or dbt_username
+      threads: 4 # Number of concurrent threads dbt can use
+      client_session_keep_alive: False
+      # query_tag: dbt_run
+

@@ -1,0 +1,59 @@
+# models/intermediate/facts/_facts.yml
+
+version: 2
+
+models:
+  - name: fct_deliveries
+    description: "Fact table containing granular ball-by-ball delivery data, linked to relevant dimensions."
+    columns:
+      - name: delivery_id
+        description: "Unique identifier for the delivery. Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: match_id
+        description: "Foreign key referencing dim_matches."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_matches\')
+              field: match_id
+      - name: batting_team_sk
+        description: "Foreign key referencing the batting team in dim_teams."
+        tests:
+          - not_null # -1 used for unknowns, so technically not null
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      - name: bowling_team_sk
+        description: "Foreign key referencing the bowling team in dim_teams."
+        tests:
+          - not_null # -1 used for unknowns
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      - name: batter_sk
+        description: "Foreign key referencing the batter in dim_players."
+        tests:
+          - not_null # -1 used for unknowns
+          - relationships:
+              to: ref(\'dim_players\')
+              field: player_sk
+      - name: bowler_sk
+        description: "Foreign key referencing the bowler in dim_players."
+        tests:
+          - not_null # -1 used for unknowns
+          - relationships:
+              to: ref(\'dim_players\')
+              field: player_sk
+      - name: runs_scored_total
+        description: "Total runs scored on the delivery."
+        tests:
+          - not_null
+      - name: is_wicket_delivery
+        description: "Integer flag (1 or 0) indicating if a wicket fell."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+

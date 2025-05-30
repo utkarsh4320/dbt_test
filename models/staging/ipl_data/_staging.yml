@@ -1,0 +1,84 @@
+# models/staging/ipl_data/_staging.yml
+# Renaming this from sources.yml to _staging.yml to hold model configs
+# Keeping sources.yml separate for source definitions
+
+version: 2
+
+models:
+  - name: stg_ipl_data__matches
+    description: "Staging model for match-level information. Cleans and renames columns from the source. One row per match."
+    columns:
+      - name: match_id
+        description: "Unique identifier for each match."
+        tests:
+          - unique
+          - not_null
+      - name: season
+        description: "The year/season the match was played in."
+      - name: match_date
+        description: "The date the match was played."
+        tests:
+          - not_null
+      - name: venue
+        description: "The name of the stadium where the match was played."
+      - name: team_one
+        description: "Name of the first team listed for the match."
+        tests:
+          - not_null
+      - name: team_two
+        description: "Name of the second team listed for the match."
+        tests:
+          - not_null
+      - name: winning_team
+        description: "Name of the team that won the match. Null if no result or tie without super over resolution."
+
+  - name: stg_ipl_data__deliveries
+    description: "Staging model for ball-by-ball delivery information. Cleans and renames columns from the source. One row per delivery."
+    columns:
+      - name: delivery_id
+        description: "Unique identifier for each delivery (composite key: match_id-inning-over-ball)."
+        tests:
+          - unique
+          - not_null
+      - name: match_id
+        description: "Foreign key referencing the match this delivery belongs to."
+        tests:
+          - not_null
+          # - relationships:
+          #     to: ref(\'stg_ipl_data__matches\')
+          #     field: match_id 
+          # Note: Relationship test commented out as staging models might run concurrently or before the other staging model is ready.
+          # Better to test relationships in intermediate layer.
+      - name: inning_number
+        description: "The inning number (1 or 2, potentially more for super overs)."
+        tests:
+          - not_null
+      - name: over_number
+        description: "The over number within the inning."
+        tests:
+          - not_null
+      - name: ball_of_over
+        description: "The delivery number within the over."
+        tests:
+          - not_null
+      - name: batting_team
+        description: "The name of the team currently batting."
+        tests:
+          - not_null
+      - name: batter_name
+        description: "Name of the batter facing the delivery."
+        tests:
+          - not_null
+      - name: bowler_name
+        description: "Name of the bowler delivering the ball."
+        tests:
+          - not_null
+      - name: runs_scored_total
+        description: "Total runs scored on this delivery (bat + extras)."
+        tests:
+          - not_null
+      - name: is_wicket
+        description: "Boolean flag indicating if a wicket fell on this delivery."
+        tests:
+          - not_null
+

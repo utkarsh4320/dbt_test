@@ -1,0 +1,111 @@
+# models/intermediate/agg/_agg.yml
+
+version: 2
+
+models:
+  - name: agg_team_batting_match
+    description: "Aggregated batting statistics for each team per match."
+    columns:
+      - name: match_id
+        description: "Foreign key referencing dim_matches."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_matches\')
+              field: match_id
+      - name: batting_team_sk
+        description: "Foreign key referencing the batting team in dim_teams."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      - name: total_runs_scored
+        description: "Total runs scored by the team in the match."
+        tests:
+          - not_null
+      - name: wickets_lost
+        description: "Total wickets lost by the team in the match."
+        tests:
+          - not_null
+      - name: balls_faced
+        description: "Total legal balls faced by the team in the match."
+        tests:
+          - not_null
+
+  - name: agg_team_bowling_match
+    description: "Aggregated bowling statistics for each team per match."
+    columns:
+      - name: match_id
+        description: "Foreign key referencing dim_matches."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_matches\')
+              field: match_id
+      - name: bowling_team_sk
+        description: "Foreign key referencing the bowling team in dim_teams."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      - name: total_runs_conceded
+        description: "Total runs conceded by the team in the match."
+        tests:
+          - not_null
+      - name: total_wickets_taken
+        description: "Total wickets taken by the team in the match."
+        tests:
+          - not_null
+      - name: balls_bowled
+        description: "Total legal balls bowled by the team in the match."
+        tests:
+          - not_null
+
+  - name: agg_team_batting_season
+    description: "Aggregated batting statistics for each team per season."
+    columns:
+      - name: season
+        description: "The season for the aggregated statistics."
+        tests:
+          - not_null
+      - name: batting_team_sk
+        description: "Foreign key referencing the batting team in dim_teams."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      # Add tests for uniqueness on season + team_sk combination if needed
+      # tests:
+      #   - unique: 
+      #       column_names: [season, batting_team_sk]
+      - name: season_total_runs_scored
+        description: "Total runs scored by the team in the season."
+        tests:
+          - not_null
+
+  - name: agg_team_bowling_season
+    description: "Aggregated bowling statistics for each team per season."
+    columns:
+      - name: season
+        description: "The season for the aggregated statistics."
+        tests:
+          - not_null
+      - name: bowling_team_sk
+        description: "Foreign key referencing the bowling team in dim_teams."
+        tests:
+          - not_null
+          - relationships:
+              to: ref(\'dim_teams\')
+              field: team_sk
+      # Add tests for uniqueness on season + team_sk combination if needed
+      # tests:
+      #   - unique: 
+      #       column_names: [season, bowling_team_sk]
+      - name: season_total_runs_conceded
+        description: "Total runs conceded by the team in the season."
+        tests:
+          - not_null
+

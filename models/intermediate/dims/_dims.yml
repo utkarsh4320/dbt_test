@@ -1,0 +1,65 @@
+# models/intermediate/dims/_dims.yml
+
+version: 2
+
+models:
+  - name: dim_matches
+    description: "Dimension table containing details about each match."
+    columns:
+      - name: match_id
+        description: "Unique identifier for the match. Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: season
+        description: "The season the match belongs to."
+      - name: match_date
+        description: "Date of the match."
+      - name: venue
+        description: "Name of the venue."
+        tests:
+          - not_null # Assuming venue is always known
+      - name: winning_team
+        description: "Name of the team that won."
+
+  - name: dim_players
+    description: "Dimension table containing unique players identified across matches and deliveries."
+    columns:
+      - name: player_sk
+        description: "Surrogate key for the player. Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: player_name
+        description: "Name of the player."
+        tests:
+          - not_null
+
+  - name: dim_teams
+    description: "Dimension table containing unique teams."
+    columns:
+      - name: team_sk
+        description: "Surrogate key for the team. Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: team_name
+        description: "Name of the team."
+        tests:
+          - not_null
+
+  - name: dim_venues
+    description: "Dimension table containing unique venues and their cities."
+    columns:
+      - name: venue_sk
+        description: "Surrogate key for the venue. Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: venue
+        description: "Name of the venue/stadium."
+        tests:
+          - not_null
+      - name: city
+        description: "City where the venue is located."
+

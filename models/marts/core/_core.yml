@@ -1,0 +1,65 @@
+# models/marts/core/_core.yml
+
+version: 2
+
+models:
+  - name: fct_match_summary
+    description: "Golden table providing a comprehensive summary of each match, including team performance metrics. Suitable for BI and analysis."
+    columns:
+      - name: match_id
+        description: "Unique identifier for the match. Primary key."
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref(\'dim_matches\')
+              field: match_id
+      - name: season
+        description: "The season the match belongs to."
+        tests:
+          - not_null
+      - name: match_date
+        description: "Date of the match."
+        tests:
+          - not_null
+      - name: venue
+        description: "Name of the venue."
+      - name: team_one
+        description: "Name of team 1."
+        tests:
+          - not_null
+      - name: team_two
+        description: "Name of team 2."
+        tests:
+          - not_null
+      - name: winning_team
+        description: "Name of the winning team."
+      
+      # Team 1 Stats
+      - name: team1_total_runs_scored
+        description: "Total runs scored by Team 1 in the match."
+      - name: team1_wickets_lost
+        description: "Total wickets lost by Team 1 in the match."
+      - name: team1_balls_faced
+        description: "Total legal balls faced by Team 1 in the match."
+      - name: team1_run_rate
+        description: "Run rate achieved by Team 1 while batting."
+      - name: team1_runs_conceded
+        description: "Total runs conceded by Team 1 while bowling."
+      - name: team1_wickets_taken
+        description: "Total wickets taken by Team 1 while bowling."
+      - name: team1_balls_bowled
+        description: "Total legal balls bowled by Team 1 in the match."
+      - name: team1_economy_rate
+        description: "Economy rate of Team 1 while bowling."
+
+      # Team 2 Stats (similar descriptions)
+      - name: team2_total_runs_scored
+      - name: team2_wickets_lost
+      - name: team2_balls_faced
+      - name: team2_run_rate
+      - name: team2_runs_conceded
+      - name: team2_wickets_taken
+      - name: team2_balls_bowled
+      - name: team2_economy_rate
+
